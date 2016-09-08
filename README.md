@@ -35,7 +35,12 @@ ES6 是 **ECMAScript 6** 的简称，是 [ECMA-262 的第 6 版本](http://www.e
 
   - 具体可以看 [ECMAScript 兼容列表]( http://kangax.github.io/compat-table/es2016plus/)。
 
-  - 使用一些转换工具，可以吧 ES6 => ES5。
+  - 使用一些转换工具，可以把 ES6 => ES5。
+
+
+* 为什么要学习新语法？
+
+  当前很多库，框架，工具都在使用 ES6+ 进行开发，典型的就是 React 和 Vue，使用新语法特性的优势进行快速开发，然后使用转换工具，构建工具部署生产代码。
 
 
 ## ES6 新特性
@@ -95,11 +100,17 @@ ES6 是 **ECMAScript 6** 的简称，是 [ECMA-262 的第 6 版本](http://www.e
 
 ## 其他
 
+* http://es6.ruanyifeng.com
+
 * https://github.com/lukehoban/es6features
 
 * https://babeljs.io/docs/learn-es2015/
 
 * https://ponyfoo.com/articles/tagged/es6-in-depth
+
+* https://github.com/bevacqua/es6
+
+* https://github.com/DrkSephy/es6-cheatsheet
 
 
 [ES5]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/New_in_JavaScript/ECMAScript_5_support_in_Mozilla
