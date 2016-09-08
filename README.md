@@ -112,6 +112,10 @@ ES6 是 **ECMAScript 6** 的简称，是 [ECMA-262 的第 6 版本](http://www.e
 
 * https://github.com/DrkSephy/es6-cheatsheet
 
+* https://github.com/ericdouglas/ES6-Learning
+
+* https://github.com/addyosmani/es6-tools
+
 
 [ES5]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/New_in_JavaScript/ECMAScript_5_support_in_Mozilla
 
