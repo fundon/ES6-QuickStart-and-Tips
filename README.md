@@ -5,7 +5,7 @@ ES6: 快速体验，及实用小贴士
 
 > 2016 年是 ES6 大力推广和普及的黄金时期，也是今年的流行趋势，
 > 就一个 [ES6](https://github.com/search?o=desc&q=ES6&s=stars&type=Repositories&utf8=✓) 关键词，
-> 在 GitHub 上就有这么多搜索结果。（感觉跟上大部队！）
+> 在 GitHub 上就有这么多搜索结果。（感觉要跟上大部队！）
 
 ![It's very hot!](images/github-search-results.png)
 
@@ -47,11 +47,334 @@ ES6 是 **ECMAScript 6** 的简称，是 [ECMA-262 的第 6 版本](http://www.e
 
   * Arrows and Lexical This
 
-  * Classes
+      “箭头”函数（`=>`）和 `this`：
+
+      > 使用“箭头”函数我们可以体验函数式编程的”美”，高效、简洁，当然也要注意上下文 `this`。
+
+      * e.g.
+
+        ```js
+        // old
+        const sum = function (a, b) { return a + b }
+        ```
+
+        ```js
+        // new
+        const sum = (a, b) => a + b
+        ```
+
+      * 猜猜猜
+
+        0. *a.js*
+
+          ```js
+          var PI = 3.14
+
+          const c = r => 2 * PI * r
+
+          // c(2) = ?
+          ```
+
+        0. *b.js*
+
+          ```js
+          var PI = 3.14
+
+          const circle = {
+            PI: 3.14159,
+            c: r => 2 * this.PI * r
+          }
+
+          // circle.c(2) = ?
+          ```
+
+        0. *c.js*
+
+          ```js
+          var PI = 3.14
+
+          const circle = {
+            PI: 3.14159,
+            c (r) {
+              return 2 * this.PI * r
+            }
+          }
+
+          // circle.c(2) = ?
+          ```
+
+  * Classes and Subclassable
+
+      类和子类：
+
+      > 基于原型链的语法糖，简单、清晰；面向对象编程更加轻松。  
+      > 再也不会被其他语言吐槽了！
+
+      * e.g.
+
+        ```js
+        // old
+        function Cat () {
+          this.voice = 'miao'
+        }
+        Cat.prototype.speak = function () {
+          console.log(this.voice)
+        }
+
+        function Lion () {
+          this.voice = 'roar'
+        }
+
+        Lion.prototype = Cat.prototype
+
+        var c = new Cat()
+        var l = new Lion()
+        c.speak()
+        l.speak()
+        ```
+
+        ```js
+        // new
+        class Cat {
+          constructor () {
+            this.voice = 'miao'
+          }
+
+          speak () {
+            console.log(this.voice)
+          }
+        }
+
+        class Lion extends Cat {
+          constructor () {
+            super()
+
+            this.voice = 'roar'
+          }
+        }
+        var c = new Cat()
+        var l = new Lion()
+        c.speak()
+        l.speak()
+        ```
+
+      * 猜猜猜
+
+        0. *cat.js*
+
+          ```js
+          class Cat {
+            constructor () {
+              this.voice = 'miao'
+            }
+
+            speak () {
+              console.log(this.voice)
+            }
+
+            static type () {
+              return Cat.name.toLowercase()
+            }
+          }
+
+          // Cat.prototype= ?
+          ```
+
+        0. *getters-setters.js*
+
+          ```js
+          class Cat {
+            constructor (options) {
+              this.voice = 'miao'
+              this.options = options || {}
+            }
+
+            speak () {
+              console.log(this.voice)
+            }
+
+            get name () {
+              return this.options.name
+            }
+
+            set name (name) {
+              this.options.name = name
+            }
+          }
+
+          var a = new Cat({ name: 'Garfield' })
+          // a.name ?
+          // a.name = 'Tom'
+          // a.name ?
+          ```
+
+        0. *[mixins.js](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes)**
+
+          ```js
+          var CalculatorMixin = Base => class extends Base {
+            calc() { }
+          }
+
+          var RandomizerMixin = Base => class extends Base {
+            randomize() { }
+          }
+
+          class Foo { }
+          class Bar extends CalculatorMixin(RandomizerMixin(Foo)) { }
+
+          // Bar.prototype ?
+          ```
+
 
   * Enhanced Object Literals
 
+    改进对象声明：
+
+      - 属性缩写
+      - 函数缩写
+      - 属性名计算
+
+    > 大大减少了代码量，创建对象更加简洁。
+
+      * e.g.
+
+        ```js
+        // old
+        var a = 1
+        var b = 2
+        var c = 3
+
+        var o = {
+          a: a,
+          b: b
+          c: c,
+          d: function () {
+            return this.a + this.b + this.c
+          }
+        }
+        ```
+
+        ```js
+        // new
+        var o = {
+          a,
+          b,
+          c,
+          d () {
+            return this.a + this.b + this.c
+          }
+        }
+        ```
+
+      * 猜猜猜
+
+        0. *returns.js*
+
+          ```js
+          var generate = (name, age) => ({ name, age })
+
+          // generate('github', 5) ?
+          ```
+
+        0. *cumputed-properties.js*
+
+          ```js
+          var create = (path, verb) => {
+            return {
+              path,
+              verb,
+              ['is' + verb[0].toUpperCase() + verb.substring(1)]: true
+            }
+          }
+
+          // create('/', 'get') ?
+          ```
+
+        0. *complicated.js*
+
+          ```js
+          var path = '/'
+          var verb = 'get'
+          var root = {
+            path,
+            verb
+          }
+
+          var route = {
+            root
+          }
+          ```
+
   * Template Strings
+
+      模板字符串：
+
+        - 支持多行
+        - 支持变量绑定
+        - 也支持对字符串不转义，不解释
+
+      > 终于可以舒服的写多行字符串了，这功能等到花儿都谢了！
+
+      * e.g.
+
+          ```js
+          // old
+          var first = 1
+          var second = 2
+          var third = 3
+
+          var str = 'No.' + first + '\n' +
+            'No.' + second +'\n' +
+            'No.' + third
+          ```
+
+          ```js
+          // new
+          var first = 1
+          var second = 2
+          var third = 3
+
+          var str = `No. ${first}
+          No. ${second}
+          No. ${third}
+          `
+          ```
+
+      * 猜猜猜
+
+          0. *raw-tag.js*
+
+            ```js
+            var t0 = `In ES5 "\n" is a line-feed.`
+            var t1 = String.raw`In ES5 "\n" is a line-feed.`
+
+            // console.log(t0)
+            // console.log(t1)
+            ```
+
+          0. *expression.js*
+
+            ```js
+            var a = 5
+            var b = 10
+
+            // console.log("Fifteen is " + (a + b) + " and\nnot " + (2 * a + b) + ".")
+            // console.log(`Fifteen is ${a + b} and\nnot ${2 * a + b}.`)
+            ```
+
+          0. *custom-tag.js*
+
+            ```js
+            var generatePath = (strings, ...values) => {
+              return strings[0] + values.reduce((prev, curr) => `${prev}/${curr}`, '')
+            }
+
+            var user = 'user'
+            var id = '233'
+            var profile = 'profile'
+            // generatePath`GET: ${user}${id}${profile}`
+            ```
+
 
   * Destructuring
 
@@ -72,8 +395,6 @@ ES6 是 **ECMAScript 6** 的简称，是 [ECMA-262 的第 6 版本](http://www.e
   * Proxies
 
   * Symbols
-
-  * Subclassable Built-ins
 
   * Math + Number + String + Array + Object APIs
 
