@@ -440,16 +440,128 @@ ES6 是 **ECMAScript 6** 的简称，是 [ECMA-262 的第 6 版本](http://www.e
 
           ```js
           var js = { name: 'ES6', age: 2015 }
+          var date = [2015, 9, 14]
 
           var { version = '6' } = js
           // version ?
 
           var { fullname: f = 'ECMAScript 6' } = js
           // fullname, f ?
+
+          var [y, m, d, h = 9] = date
+          // y, m, d, h ?
           ```
 
 
   * Default + Rest + Spread
+
+      默认值、余下参数（Rest），数组展开（Spread）
+
+        - 默认值： 减少了对输入参数的检查的代码量，即可读又简洁
+        - Rest：对参数数组操作更加灵活
+        - Spread：可以看作是 Rest 的反操作，更加方便对数组的操作 
+
+      * e.g.
+
+        ```js
+        // old
+        function bar (a) {
+          a = a || 5
+        }
+
+        function sum (a) {
+          a = a || 5
+          var l = arguments.length
+          var i = 1
+          for (; i < l; ++i) {
+            a += arguments[i]
+          }
+          return a
+        }
+
+        function apply () {
+          function fn () {}
+          var l = arguments.length
+          var args = new Array(l)
+          for (var i = 0; i < l; ++i) {
+            args[i] = arguments[i]
+          }
+          fn.apply(null, args)
+        }
+        ```
+
+        ```js
+        // new
+        function bar(a = 5) {
+        }
+
+        function sum (a = 5, ...args) {
+          var l = args.length
+          var i = 0
+          for (; i < l; ++i) {
+            a += args[i]
+          }
+          return a
+        }
+
+        function apply (...args) {
+          function fn () {}
+          fn.apply(null, args)
+        }
+        ```
+
+      * 猜猜猜
+
+        0. *concat.js*
+
+          ```js
+          var a = [1, 2, 3]
+          var b = [6, 5, 4]
+
+          var c = [...a, ...b]
+          // c ?
+          ```
+
+        0. *parse-args.js*
+
+          ```js
+          /**
+           * 解析参数，返回特定格式
+           * 
+           * @return {Array} [arr, options, cb]
+           */
+
+          function parseArgs (...args) {
+            const last = args[args.length - 1]
+            const type = typeof last
+            let opts
+            let cb
+
+            if ('function' === type) {
+              cb = args.pop()
+              if ('object' === typeof args[args.length - 1]) {
+                opts = args.pop()
+              }
+            } else if ('object' === type && !Array.isArray(last)) {
+              opts = args.pop()
+            } else if ('undefined' === type) {
+              args.pop()
+              return parseArgs(...args)
+            }
+
+            if (Array.isArray(args[0])) {
+              args = args[0]
+            }
+            return [args, opts || {}, cb]
+          }
+
+          // parseArgs('users') ?
+          // parseArgs('users', {}) ?
+          // parseArgs('users', () => {}) ?
+          // parseArgs('users', {}, () => {}) ?
+          // parseArgs('users', 'books') ?
+          // parseArgs(['users', 'books']) ?
+          ```
 
   * Let + Const
 
