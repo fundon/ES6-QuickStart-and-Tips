@@ -565,6 +565,73 @@ ES6 是 **ECMAScript 6** 的简称，是 [ECMA-262 的第 6 版本](http://www.e
 
   * Let + Const
 
+    变量、常量定义声明：
+
+      - 块级作用域
+      - const: 一次性声明
+
+    > 当满世界都是 `var` 的时候，变量管理是个神坑！
+
+    * e.g.
+
+      ```js
+      // old
+      // 函数作用域下覆盖全局作用域
+      var bar = 1
+      var bar = 3
+      function method () {
+        console.log(bar) // undefined
+        var bar = 2
+      }
+
+      // 变量泄漏
+      var s = 'hello';
+      for (var i = 0; i < s.length; i++) {
+        console.log(s[i]);
+      }
+      console.log(i); // 5
+      ```
+
+      ```js
+      // new
+      let bar0 = 1
+      let bar1 = 3
+
+      function method () {
+        console.log(bar0)
+        let bar3 = 2
+      }
+
+      var s = 'hello';
+      for (let i = 0; i < s.length; i++) {
+        console.log(s[i]);
+      }
+      ```
+
+    * 猜猜猜
+
+      0. *global.js*
+
+        ```js
+        var a = 1
+        let b = 2
+        const c = 3
+
+        // this.a ?
+        // this.b ?
+        // this.c ?
+        ```
+
+      0. *for.js*
+
+        ```js
+        var s = 'hello';
+        for (let i = 0; i < s.length; i++) {
+          console.log(s[i]);
+        }
+        console.log(i); // ?
+        ```
+
   * Iterators + For..Of
 
   * Generators
