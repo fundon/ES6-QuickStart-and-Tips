@@ -378,6 +378,77 @@ ES6 是 **ECMAScript 6** 的简称，是 [ECMA-262 的第 6 版本](http://www.e
 
   * Destructuring
 
+      解析赋值
+
+      - Array ArrayLike Object 等，具有迭代其接口的对象
+
+      > 可以轻松获取对象、数组等的元素，并赋值到指定变量
+
+      * e.g.
+
+        ```js
+        // old
+        var arr = [1, 2, 3, 4]
+
+        var a0 = arr[0]
+        var a1 = arr[1]
+        var a2 = arr[2]
+
+        var obj = {
+          name: 'github',
+          age: 5
+        }
+
+        var name = obj.name
+        var age = obj.age
+        ```
+
+        ```js
+        // new
+        var arr = [1, 2, 3, 4]
+
+        var [a0, a1, a2] = arr
+
+        var obj = {
+          name: 'github',
+          age: 5
+        }
+
+        var { name, age } = obj
+        ```
+
+      * 猜猜猜
+
+        0. *print.js*
+
+          ```js
+          var print = ({ name, age }) => console.log(name, age)
+
+          // print({ name: 'ES6', age: 2015 }) ?
+          ```
+
+        0. *alias.js*
+
+          ```js
+          var js = { name: 'ES6', age: 2015 }
+
+          var { name: es, age } = js
+          // name, es, age?
+          ```
+
+        0. *defaults.js*
+
+          ```js
+          var js = { name: 'ES6', age: 2015 }
+
+          var { version = '6' } = js
+          // version ?
+
+          var { fullname: f = 'ECMAScript 6' } = js
+          // fullname, f ?
+          ```
+
+
   * Default + Rest + Spread
 
   * Let + Const
