@@ -5,7 +5,7 @@ ES6: 快速体验，及实用小贴士
 
 > 2016 年是 ES6 大力推广和普及的黄金时期，也是今年的流行趋势，
 > 就一个 [ES6](https://github.com/search?o=desc&q=ES6&s=stars&type=Repositories&utf8=✓) 关键词，
-> 在 GitHub 上就有这么多搜索结果。（感觉要跟上大部队！）
+> 在 GitHub 上就有这么多搜索结果。（赶紧要跟上大部队！）
 
 ![It's very hot!](images/github-search-results.png)
 
@@ -31,16 +31,16 @@ ES6 是 **ECMAScript 6** 的简称，是 [ECMA-262 的第 6 版本](http://www.e
 
   前者是后者的语言标准，后者是前者的一个实现。
 
-* ES6 在浏览器端支持如何，适不适合开发，生产？
+* ES6 在浏览器，Node.js 支持如何，适不适合开发，生产？
 
-  - 具体可以看 [ECMAScript 兼容列表]( http://kangax.github.io/compat-table/es2016plus/)。
+  - 具体可以看 [ECMAScript 兼容列表](http://kangax.github.io/compat-table/es2016plus/)。
 
   - 使用一些转换工具，可以把 ES6 => ES5。
 
 
 * 为什么要学习新语法？
 
-  当前很多库，框架，工具都在使用 ES6+ 进行开发，典型的就是 React 和 Vue，使用新语法特性的优势进行快速开发，然后使用转换工具，构建工具部署生产代码。
+  当前很多库、框架、工具都在使用 **ES6+** 进行开发，典型的就是 React 和 Vue，使用新语法特性的优势进行快速开发，然后使用转换构建工具部署生产代码。
 
 
 ## ES6 新特性
@@ -55,12 +55,12 @@ ES6 是 **ECMAScript 6** 的简称，是 [ECMA-262 的第 6 版本](http://www.e
 
       ```js
       // old
-      const sum = function (a, b) { return a + b }
+      var sum = function (a, b) { return a + b }
       ```
 
       ```js
       // new
-      const sum = (a, b) => a + b
+      var sum = (a, b) => a + b
       ```
 
     * 猜猜猜
@@ -70,7 +70,7 @@ ES6 是 **ECMAScript 6** 的简称，是 [ECMA-262 的第 6 版本](http://www.e
         ```js
         var PI = 3.14
 
-        const c = r => 2 * PI * r
+        var c = r => 2 * PI * r
 
         // c(2) = ?
         ```
@@ -80,7 +80,7 @@ ES6 是 **ECMAScript 6** 的简称，是 [ECMA-262 的第 6 版本](http://www.e
         ```js
         var PI = 3.14
 
-        const circle = {
+        var circle = {
           PI: 3.14159,
           c: r => 2 * this.PI * r
         }
@@ -93,7 +93,7 @@ ES6 是 **ECMAScript 6** 的简称，是 [ECMA-262 的第 6 版本](http://www.e
         ```js
         var PI = 3.14
 
-        const circle = {
+        var circle = {
           PI: 3.14159,
           c (r) {
             return 2 * this.PI * r
@@ -103,9 +103,9 @@ ES6 是 **ECMAScript 6** 的简称，是 [ECMA-262 的第 6 版本](http://www.e
         // circle.c(2) = ?
         ```
 
-  * Classes and Subclassable
+  * Classes
 
-      类和子类：
+      类：
 
       > 基于原型链的语法糖，简单、清晰；面向对象编程更加轻松。  
       > 再也不会被其他语言吐槽了！
@@ -380,7 +380,7 @@ ES6 是 **ECMAScript 6** 的简称，是 [ECMA-262 的第 6 版本](http://www.e
 
       解析赋值
 
-      - Array ArrayLike Object 等，具有迭代其接口的对象
+      - Array ArrayLike Object 等，具有迭代器接口的对象
 
       > 可以轻松获取对象、数组等的元素，并赋值到指定变量
 
@@ -639,6 +639,8 @@ ES6 是 **ECMAScript 6** 的简称，是 [ECMA-262 的第 6 版本](http://www.e
   * Unicode
 
   * Modules
+
+  * Subclassable Built-ins
 
   * Map + Set + WeakMap + WeakSet
 
