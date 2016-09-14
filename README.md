@@ -655,7 +655,7 @@ ES6 是 **ECMAScript 6** 的简称，是 [ECMA-262 的第 6 版本](http://www.e
 
     迭代器和 `for..of`
 
-    > 像 [...arr] 就是迭器一个很好的例子。
+    > 像 [...arr] 就是迭代器一个很好的例子。
 
     - 可迭代协议：ES6 定义了一套统一的标准，允许对 JavaScript 对象自定义它们的迭代行为。
 
@@ -765,7 +765,7 @@ ES6 是 **ECMAScript 6** 的简称，是 [ECMA-262 的第 6 版本](http://www.e
 
     - [遵循迭代器协议](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols#iterator)
 
-    - 可在单个函数内自定义迭代逻辑，可以替代迭代器，功能更强大
+    - 可在单个函数内 `GeneratorFunction` 自定义迭代逻辑，可以替代迭代器，功能更强大
 
     - 可中断
 
@@ -933,6 +933,17 @@ ES6 是 **ECMAScript 6** 的简称，是 [ECMA-262 的第 6 版本](http://www.e
 * https://github.com/addyosmani/es6-tools
 
 * https://github.com/bevacqua/promisees
+
+
+## License
+
+授权：[署名-非商业性使用](https://creativecommons.org/licenses/by-nc/4.0/)
+
+---
+
+> [fundon.me](https://fundon.me) &nbsp;&middot;&nbsp;
+> GitHub [@fundon](https://github.com/fundon) &nbsp;&middot;&nbsp;
+> Twitter [@_fundon](https://twitter.com/_fundon)
 
 [ES5]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/New_in_JavaScript/ECMAScript_5_support_in_Mozilla
 
