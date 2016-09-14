@@ -1166,6 +1166,127 @@ ES6 是 **ECMAScript 6** 的简称，是 [ECMA-262 的第 6 版本](http://www.e
 
   * Promises
 
+    Promises：更加优雅的异步编程方式。想更加清晰了解 `Promise` 的执行过程，可以看这个可视化工具 [promisees](https://github.com/bevacqua/promisees)。
+
+    > 面对异步编程，`callback-hell` 就是 JavaScript 给人的最大诟病！  
+
+    * e.g.
+
+      ```js
+      // old
+      getProfileById(233, (err, res) => {
+        if (err) throw err
+        getFollowing(233, (err, following) => {
+          if (err) throw err
+          getFollowers(233, (err, followers) => {
+            if (err) throw err
+            getStarred(233, (err, starred) => {
+              if (err) throw err
+              // ....
+            })
+          })
+        })
+      })
+      ```
+
+      ```js
+      // new
+      getProfileById(233)
+        .then(res => getFollowing(233))
+        .then(res => getFollowers(233))
+        .then(res => getStarred(233))
+        .catch(err => console.log(err))
+        // ...
+      ```
+
+    * 猜猜猜
+
+      0. *simple-promise.js*
+
+        ```js
+        function loadImage (url) {
+          return new Promise((resolve, reject) => {
+            const img = new Image()
+
+            img.onload = function () {
+              resolve(img)
+            }
+
+            img.onerror = function () {
+              reject(new Error('Could not load image at ' + url))
+            }
+
+            img.url = url
+          })
+        }
+
+        loadImage('https://nodejs.org/static/images/logo-header.png')
+          .then(img => document.body.appendChild(img))
+          .catch(err => console.log(err))
+        ```
+
+      0. *all.js*
+
+        ```js
+        function delay(value, duration = 0) {
+          return new Promise((resolve, reject) => {
+            setTimeout(() => resolve(value), duration)
+          })
+        }
+
+        let res = Promise.all([
+          delay(10, 1),
+          delay(8, 2),
+          delay(6, 3),
+          delay(4, 4),
+          delay(2, 5),
+          delay(0, 6),
+        ])
+
+        res.then(arr => {
+          console.log(arr) // ?
+        })
+        ```
+
+      0. *race.js*
+
+        ```js
+        function delay(value, duration = 0) {
+          return new Promise((resolve, reject) => {
+            setTimeout(() => resolve(value), duration)
+          })
+        }
+
+        let res = Promise.race([
+          delay(10, 1),
+          delay(8, 2),
+          delay(6, 3),
+          delay(4, 4),
+          delay(2, 5),
+          delay(0, 6),
+        ])
+
+        res.then(arr => {
+          console.log(arr) // ?
+        })
+        ```
+
+      0. *reduce.js*
+
+        ```js
+        const reduce = (arr, cb, initialValue = 0) => {
+          return arr.reduce(cb, Promise.resolve(initialValue))
+        }
+
+        const cb = (prev, curr) => prev.then(v => v + curr)
+
+        reduce([1, 2, 3, 4, 5, 6, 7, 8, 9], cb)
+          .then(res => {
+            console.log(res) // ?
+          })
+        ```
+
+
 
   * Reflect API
 
