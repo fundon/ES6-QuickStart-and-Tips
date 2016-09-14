@@ -107,36 +107,64 @@ ES6 是 **ECMAScript 6** 的简称，是 [ECMA-262 的第 6 版本](http://www.e
 
   * Classes
 
-      类：
+    类：
 
-      > 基于原型链的语法糖，简单、清晰；面向对象编程更加轻松。  
-      > 再也不会被其他语言吐槽了！
+    > 基于原型链的语法糖，简单、清晰；面向对象编程更加轻松。  
+    > 再也不会被其他语言吐槽了！
 
-      * e.g.
+    * e.g.
 
-        ```js
-        // old
-        function Cat () {
+      ```js
+      // old
+      function Cat () {
+        this.voice = 'miao'
+      }
+      Cat.prototype.speak = function () {
+        console.log(this.voice)
+      }
+
+      function Lion () {
+        this.voice = 'roar'
+      }
+
+      Lion.prototype = Cat.prototype
+
+      var c = new Cat()
+      var l = new Lion()
+      c.speak()
+      l.speak()
+      ```
+
+      ```js
+      // new
+      class Cat {
+        constructor () {
           this.voice = 'miao'
         }
-        Cat.prototype.speak = function () {
+
+        speak () {
           console.log(this.voice)
         }
+      }
 
-        function Lion () {
+      class Lion extends Cat {
+        constructor () {
+          super()
+
           this.voice = 'roar'
         }
+      }
+      var c = new Cat()
+      var l = new Lion()
+      c.speak()
+      l.speak()
+      ```
 
-        Lion.prototype = Cat.prototype
+    * 猜猜猜
 
-        var c = new Cat()
-        var l = new Lion()
-        c.speak()
-        l.speak()
-        ```
+      0. *cat.js*
 
         ```js
-        // new
         class Cat {
           constructor () {
             this.voice = 'miao'
@@ -145,613 +173,588 @@ ES6 是 **ECMAScript 6** 的简称，是 [ECMA-262 的第 6 版本](http://www.e
           speak () {
             console.log(this.voice)
           }
-        }
 
-        class Lion extends Cat {
-          constructor () {
-            super()
-
-            this.voice = 'roar'
+          static type () {
+            return Cat.name.toLowercase()
           }
         }
-        var c = new Cat()
-        var l = new Lion()
-        c.speak()
-        l.speak()
+
+        // Cat.prototype= ?
         ```
 
-      * 猜猜猜
+      0. *getters-setters.js*
 
-        0. *cat.js*
-
-          ```js
-          class Cat {
-            constructor () {
-              this.voice = 'miao'
-            }
-
-            speak () {
-              console.log(this.voice)
-            }
-
-            static type () {
-              return Cat.name.toLowercase()
-            }
+        ```js
+        class Cat {
+          constructor (options) {
+            this.voice = 'miao'
+            this.options = options || {}
           }
 
-          // Cat.prototype= ?
-          ```
-
-        0. *getters-setters.js*
-
-          ```js
-          class Cat {
-            constructor (options) {
-              this.voice = 'miao'
-              this.options = options || {}
-            }
-
-            speak () {
-              console.log(this.voice)
-            }
-
-            get name () {
-              return this.options.name
-            }
-
-            set name (name) {
-              this.options.name = name
-            }
+          speak () {
+            console.log(this.voice)
           }
 
-          var a = new Cat({ name: 'Garfield' })
-          // a.name ?
-          // a.name = 'Tom'
-          // a.name ?
-          ```
-
-        0. *[mixins.js](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes)*
-
-          ```js
-          var CalculatorMixin = Base => class extends Base {
-            calc() { }
+          get name () {
+            return this.options.name
           }
 
-          var RandomizerMixin = Base => class extends Base {
-            randomize() { }
+          set name (name) {
+            this.options.name = name
           }
+        }
 
-          class Foo { }
-          class Bar extends CalculatorMixin(RandomizerMixin(Foo)) { }
+        var a = new Cat({ name: 'Garfield' })
+        // a.name ?
+        // a.name = 'Tom'
+        // a.name ?
+        ```
 
-          // Bar.prototype ?
-          ```
+      0. *[mixins.js](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes)*
+
+        ```js
+        var CalculatorMixin = Base => class extends Base {
+          calc() { }
+        }
+
+        var RandomizerMixin = Base => class extends Base {
+          randomize() { }
+        }
+
+        class Foo { }
+        class Bar extends CalculatorMixin(RandomizerMixin(Foo)) { }
+
+        // Bar.prototype ?
+        ```
 
 
   * Enhanced Object Literals
 
-      改进对象声明：
+    改进对象声明：
 
-        - 属性缩写
+    - 属性缩写
 
-        - 函数缩写
+    - 函数缩写
 
-        - 属性名计算
+    - 属性名计算
 
-      > 大大减少了代码量，创建对象更加简洁。
+    > 大大减少了代码量，创建对象更加简洁。
 
-      * e.g.
+    * e.g.
+
+      ```js
+      // old
+      var a = 1
+      var b = 2
+      var c = 3
+
+      var o = {
+        a: a,
+        b: b
+        c: c,
+        d: function () {
+          return this.a + this.b + this.c
+        }
+      }
+      ```
+
+      ```js
+      // new
+      var o = {
+        a,
+        b,
+        c,
+        d () {
+          return this.a + this.b + this.c
+        }
+      }
+      ```
+
+    * 猜猜猜
+
+      0. *returns.js*
 
         ```js
-        // old
-        var a = 1
-        var b = 2
-        var c = 3
+        var generate = (name, age) => ({ name, age })
 
-        var o = {
-          a: a,
-          b: b
-          c: c,
-          d: function () {
-            return this.a + this.b + this.c
-          }
-        }
+        // generate('github', 5) ?
         ```
+
+      0. *cumputed-properties.js*
 
         ```js
-        // new
-        var o = {
-          a,
-          b,
-          c,
-          d () {
-            return this.a + this.b + this.c
-          }
-        }
-        ```
-
-      * 猜猜猜
-
-        0. *returns.js*
-
-          ```js
-          var generate = (name, age) => ({ name, age })
-
-          // generate('github', 5) ?
-          ```
-
-        0. *cumputed-properties.js*
-
-          ```js
-          var create = (path, verb) => {
-            return {
-              path,
-              verb,
-              ['is' + verb[0].toUpperCase() + verb.substring(1)]: true
-            }
-          }
-
-          // create('/', 'get') ?
-          ```
-
-        0. *complicated.js*
-
-          ```js
-          var path = '/'
-          var verb = 'get'
-          var root = {
+        var create = (path, verb) => {
+          return {
             path,
-            verb
+            verb,
+            ['is' + verb[0].toUpperCase() + verb.substring(1)]: true
           }
+        }
 
-          var route = {
-            root
-          }
-          ```
+        // create('/', 'get') ?
+        ```
+
+      0. *complicated.js*
+
+        ```js
+        var path = '/'
+        var verb = 'get'
+        var root = {
+          path,
+          verb
+        }
+
+        var route = {
+          root
+        }
+        ```
 
   * Template Strings
 
-      模板字符串：
+    模板字符串：
 
-        - 支持多行
+    - 支持多行
 
-        - 支持变量绑定
+    - 支持变量绑定
 
-        - 也支持对字符串不转义，不解析
+    - 也支持对字符串不转义，不解析
 
-      > 终于可以舒服的写多行字符串了，这功能等到花儿都谢了！
+    > 终于可以舒服的写多行字符串了，这功能等到花儿都谢了！
 
-      * e.g.
+    * e.g.
+
+      ```js
+      // old
+      var first = 1
+      var second = 2
+      var third = 3
+
+      var str = 'No.' + first + '\n' +
+        'No.' + second +'\n' +
+        'No.' + third
+      ```
+
+      ```js
+      // new
+      var first = 1
+      var second = 2
+      var third = 3
+
+      var str = `No. ${first}
+      No. ${second}
+      No. ${third}
+      `
+      ```
+
+    * 猜猜猜
+
+      0. *raw-tag.js*
 
         ```js
-        // old
-        var first = 1
-        var second = 2
-        var third = 3
+        var t0 = `In ES5 "\n" is a line-feed.`
+        var t1 = String.raw`In ES5 "\n" is a line-feed.`
 
-        var str = 'No.' + first + '\n' +
-          'No.' + second +'\n' +
-          'No.' + third
+        // console.log(t0)
+        // console.log(t1)
         ```
+
+      0. *expression.js*
 
         ```js
-        // new
-        var first = 1
-        var second = 2
-        var third = 3
+        var a = 5
+        var b = 10
 
-        var str = `No. ${first}
-        No. ${second}
-        No. ${third}
-        `
+        // console.log("Fifteen is " + (a + b) + " and\nnot " + (2 * a + b) + ".")
+        // console.log(`Fifteen is ${a + b} and\nnot ${2 * a + b}.`)
         ```
 
-      * 猜猜猜
+      0. *custom-tag.js*
 
-        0. *raw-tag.js*
+        ```js
+        var generatePath = (strings, ...values) => {
+          return strings[0] + values.reduce((prev, curr) => `${prev}/${curr}`, '')
+        }
 
-          ```js
-          var t0 = `In ES5 "\n" is a line-feed.`
-          var t1 = String.raw`In ES5 "\n" is a line-feed.`
-
-          // console.log(t0)
-          // console.log(t1)
-          ```
-
-        0. *expression.js*
-
-          ```js
-          var a = 5
-          var b = 10
-
-          // console.log("Fifteen is " + (a + b) + " and\nnot " + (2 * a + b) + ".")
-          // console.log(`Fifteen is ${a + b} and\nnot ${2 * a + b}.`)
-          ```
-
-        0. *custom-tag.js*
-
-          ```js
-          var generatePath = (strings, ...values) => {
-            return strings[0] + values.reduce((prev, curr) => `${prev}/${curr}`, '')
-          }
-
-          var user = 'user'
-          var id = '233'
-          var profile = 'profile'
-          // generatePath`GET: ${user}${id}${profile}`
-          ```
+        var user = 'user'
+        var id = '233'
+        var profile = 'profile'
+        // generatePath`GET: ${user}${id}${profile}`
+        ```
 
 
   * Destructuring
 
-      解析赋值
+    解析赋值
 
-        - Array ArrayLike Object 等，具有迭代器接口的对象
+    - Array ArrayLike Object 等，具有迭代器接口的对象
 
-      > 可以轻松获取对象、数组等的元素，并赋值到指定变量
+    > 可以轻松获取对象、数组等的元素，并赋值到指定变量
 
-      * e.g.
+    * e.g.
+
+      ```js
+      // old
+      var arr = [1, 2, 3, 4]
+
+      var a0 = arr[0]
+      var a1 = arr[1]
+      var a2 = arr[2]
+
+      var obj = {
+        name: 'github',
+        age: 5
+      }
+
+      var name = obj.name
+      var age = obj.age
+      ```
+
+      ```js
+      // new
+      var arr = [1, 2, 3, 4]
+
+      var [a0, a1, a2] = arr
+
+      var obj = {
+        name: 'github',
+        age: 5
+      }
+
+      var { name, age } = obj
+      ```
+
+    * 猜猜猜
+
+      0. *print.js*
 
         ```js
-        // old
-        var arr = [1, 2, 3, 4]
+        var print = ({ name, age }) => console.log(name, age)
 
-        var a0 = arr[0]
-        var a1 = arr[1]
-        var a2 = arr[2]
-
-        var obj = {
-          name: 'github',
-          age: 5
-        }
-
-        var name = obj.name
-        var age = obj.age
+        // print({ name: 'ES6', age: 2015 }) ?
         ```
+
+      0. *alias.js*
 
         ```js
-        // new
-        var arr = [1, 2, 3, 4]
+        var js = { name: 'ES6', age: 2015 }
 
-        var [a0, a1, a2] = arr
-
-        var obj = {
-          name: 'github',
-          age: 5
-        }
-
-        var { name, age } = obj
+        var { name: es, age } = js
+        // name, es, age?
         ```
 
-      * 猜猜猜
+      0. *defaults.js*
 
-        0. *print.js*
+        ```js
+        var js = { name: 'ES6', age: 2015 }
+        var date = [2015, 9, 14]
 
-          ```js
-          var print = ({ name, age }) => console.log(name, age)
+        var { version = '6' } = js
+        // version ?
 
-          // print({ name: 'ES6', age: 2015 }) ?
-          ```
+        var { fullname: f = 'ECMAScript 6' } = js
+        // fullname, f ?
 
-        0. *alias.js*
-
-          ```js
-          var js = { name: 'ES6', age: 2015 }
-
-          var { name: es, age } = js
-          // name, es, age?
-          ```
-
-        0. *defaults.js*
-
-          ```js
-          var js = { name: 'ES6', age: 2015 }
-          var date = [2015, 9, 14]
-
-          var { version = '6' } = js
-          // version ?
-
-          var { fullname: f = 'ECMAScript 6' } = js
-          // fullname, f ?
-
-          var [y, m, d, h = 9] = date
-          // y, m, d, h ?
-          ```
+        var [y, m, d, h = 9] = date
+        // y, m, d, h ?
+        ```
 
 
   * Default + Rest + Spread
 
-      默认值、余下参数（Rest），数组展开（Spread）
+    默认值、余下参数（Rest），数组展开（Spread）
 
-        - 默认值： 减少了对输入参数的检查的代码量，即可读又简洁
+    - 默认值： 减少了对输入参数的检查的代码量，即可读又简洁
 
-        - Rest：对参数数组操作更加灵活
+    - Rest：对参数数组操作更加灵活
 
-        - Spread：可以看作是 Rest 的反操作，更加方便对数组的操作 
+    - Spread：可以看作是 Rest 的反操作，更加方便对数组的操作 
 
-      * e.g.
+    * e.g.
+
+      ```js
+      // old
+      function bar (a) {
+        a = a || 5
+      }
+
+      function sum (a) {
+        a = a || 5
+        var l = arguments.length
+        var i = 1
+        for (; i < l; ++i) {
+          a += arguments[i]
+        }
+        return a
+      }
+
+      function apply () {
+        function fn () {}
+        var l = arguments.length
+        var args = new Array(l)
+        for (var i = 0; i < l; ++i) {
+          args[i] = arguments[i]
+        }
+        fn.apply(null, args)
+      }
+      ```
+
+      ```js
+      // new
+      function bar(a = 5) {
+      }
+
+      function sum (a = 5, ...args) {
+        var l = args.length
+        var i = 0
+        for (; i < l; ++i) {
+          a += args[i]
+        }
+        return a
+      }
+
+      function apply (...args) {
+        function fn () {}
+        fn.apply(null, args)
+      }
+      ```
+
+    * 猜猜猜
+
+      0. *string.js*
 
         ```js
-        // old
-        function bar (a) {
-          a = a || 5
-        }
+        var str = '1234567890'
 
-        function sum (a) {
-          a = a || 5
-          var l = arguments.length
-          var i = 1
-          for (; i < l; ++i) {
-            a += arguments[i]
-          }
-          return a
-        }
-
-        function apply () {
-          function fn () {}
-          var l = arguments.length
-          var args = new Array(l)
-          for (var i = 0; i < l; ++i) {
-            args[i] = arguments[i]
-          }
-          fn.apply(null, args)
-        }
+        // [...str] ?
         ```
+
+      0. *concat.js*
 
         ```js
-        // new
-        function bar(a = 5) {
-        }
+        var a = [1, 2, 3]
+        var b = [6, 5, 4]
 
-        function sum (a = 5, ...args) {
-          var l = args.length
-          var i = 0
-          for (; i < l; ++i) {
-            a += args[i]
-          }
-          return a
-        }
-
-        function apply (...args) {
-          function fn () {}
-          fn.apply(null, args)
-        }
+        var c = [...a, ...b]
+        // c ?
         ```
 
-      * 猜猜猜
+      0. *parse-args.js*
 
-        0. *string.js*
+        ```js
+        /**
+         * 解析参数，返回特定格式
+         * 
+         * @return {Array} [arr, options, cb]
+         */
 
-          ```js
-          var str = '1234567890'
+        function parseArgs (...args) {
+          const last = args[args.length - 1]
+          const type = typeof last
+          let opts
+          let cb
 
-          // [...str] ?
-          ```
-
-        0. *concat.js*
-
-          ```js
-          var a = [1, 2, 3]
-          var b = [6, 5, 4]
-
-          var c = [...a, ...b]
-          // c ?
-          ```
-
-        0. *parse-args.js*
-
-          ```js
-          /**
-           * 解析参数，返回特定格式
-           * 
-           * @return {Array} [arr, options, cb]
-           */
-
-          function parseArgs (...args) {
-            const last = args[args.length - 1]
-            const type = typeof last
-            let opts
-            let cb
-
-            if ('function' === type) {
-              cb = args.pop()
-              if ('object' === typeof args[args.length - 1]) {
-                opts = args.pop()
-              }
-            } else if ('object' === type && !Array.isArray(last)) {
+          if ('function' === type) {
+            cb = args.pop()
+            if ('object' === typeof args[args.length - 1]) {
               opts = args.pop()
-            } else if ('undefined' === type) {
-              args.pop()
-              return parseArgs(...args)
             }
-
-            if (Array.isArray(args[0])) {
-              args = args[0]
-            }
-            return [args, opts || {}, cb]
+          } else if ('object' === type && !Array.isArray(last)) {
+            opts = args.pop()
+          } else if ('undefined' === type) {
+            args.pop()
+            return parseArgs(...args)
           }
 
-          // parseArgs('users') ?
-          // parseArgs('users', {}) ?
-          // parseArgs('users', () => {}) ?
-          // parseArgs('users', {}, () => {}) ?
-          // parseArgs('users', 'books') ?
-          // parseArgs(['users', 'books']) ?
-          ```
+          if (Array.isArray(args[0])) {
+            args = args[0]
+          }
+          return [args, opts || {}, cb]
+        }
+
+        // parseArgs('users') ?
+        // parseArgs('users', {}) ?
+        // parseArgs('users', () => {}) ?
+        // parseArgs('users', {}, () => {}) ?
+        // parseArgs('users', 'books') ?
+        // parseArgs(['users', 'books']) ?
+        ```
+
 
   * Let + Const
 
-      变量、常量定义声明：
+    变量、常量定义声明：
 
-        - 块级作用域
+    - 块级作用域
 
-        - const: 一次性声明
+    - const: 一次性声明
 
-      > 当满世界都是 `var` 的时候，变量管理是个神坑！
+    > 当满世界都是 `var` 的时候，变量管理是个神坑！
 
-      * e.g.
+    * e.g.
+
+      ```js
+      // old
+      // 函数作用域下覆盖全局作用域
+      var bar = 1
+      var bar = 3
+      function method () {
+        console.log(bar) // undefined
+        var bar = 2
+      }
+
+      // 变量泄漏
+      var s = 'hello';
+      for (var i = 0; i < s.length; i++) {
+        console.log(s[i]);
+      }
+      console.log(i); // 5
+      ```
+
+      ```js
+      // new
+      let bar0 = 1
+      let bar1 = 3
+
+      function method () {
+        console.log(bar0)
+        let bar3 = 2
+      }
+
+      var s = 'hello';
+      for (let i = 0; i < s.length; i++) {
+        console.log(s[i]);
+      }
+      ```
+
+    * 猜猜猜
+
+      0. *global.js*
 
         ```js
-        // old
-        // 函数作用域下覆盖全局作用域
-        var bar = 1
-        var bar = 3
-        function method () {
-          console.log(bar) // undefined
-          var bar = 2
-        }
+        var a = 1
+        let b = 2
+        const c = 3
 
-        // 变量泄漏
-        var s = 'hello';
-        for (var i = 0; i < s.length; i++) {
-          console.log(s[i]);
-        }
-        console.log(i); // 5
+        // this.a ?
+        // this.b ?
+        // this.c ?
         ```
 
+      0. *for.js*
+
         ```js
-        // new
-        let bar0 = 1
-        let bar1 = 3
-
-        function method () {
-          console.log(bar0)
-          let bar3 = 2
-        }
-
         var s = 'hello';
         for (let i = 0; i < s.length; i++) {
           console.log(s[i]);
         }
+        console.log(i); // ?
         ```
 
-      * 猜猜猜
-
-        0. *global.js*
-
-          ```js
-          var a = 1
-          let b = 2
-          const c = 3
-
-          // this.a ?
-          // this.b ?
-          // this.c ?
-          ```
-
-        0. *for.js*
-
-          ```js
-          var s = 'hello';
-          for (let i = 0; i < s.length; i++) {
-            console.log(s[i]);
-          }
-          console.log(i); // ?
-          ```
 
   * Iterators + For..Of
 
-      迭代器和 `for..of`
+    迭代器和 `for..of`
 
-        - 可迭代协议：ES6 定义了一套统一的标准，允许对 JavaScript 对象自定义它们的迭代行为。
+    - 可迭代协议：ES6 定义了一套统一的标准，允许对 JavaScript 对象自定义它们的迭代行为。
 
-        - 内置可迭代类型有 String，Array，TypedArray，Map，Set，因为在它们的原型对象上已经有了 `@@iterator`（`[Symbol.iterator]`） 方法。
+    - 内置可迭代类型有 String，Array，TypedArray，Map，Set，因为在它们的原型对象上已经有了 `@@iterator`（`[Symbol.iterator]`） 方法。
 
-      > 像 [...arr] 就是迭器一个很好的例子。
+    > 像 [...arr] 就是迭器一个很好的例子。
 
-      * .e.g.
+    * .e.g.
+
+      ```js
+      // old
+      var arr = [1, 2, 3]
+
+      for (let i in arr) {
+        console.log(i)
+      }
+      ```
+
+      ```js
+      // new
+      var arr = [1, 2, 3]
+
+      for (let i of arr) {
+        console.log(i)
+      }
+      ```
+
+    * 猜猜猜
+
+      0. *for-loops.js*
 
         ```js
-        // old
+        Array.prototype.arrCustom = function () {}
         var arr = [1, 2, 3]
+        arr.isArray = true
 
         for (let i in arr) {
-          console.log(i)
+          console.log(i) // ?
         }
-        ```
-
-        ```js
-        // new
-        var arr = [1, 2, 3]
 
         for (let i of arr) {
-          console.log(i)
+          console.log(i) // ?
         }
         ```
 
-      * 猜猜猜
+      0. *iterable.js*
 
-        0. *for-loops.js*
-
-          ```js
-          Array.prototype.arrCustom = function () {}
-          var arr = [1, 2, 3]
-          arr.isArray = true
-
-          for (let i in arr) {
-            console.log(i) // ?
-          }
-
-          for (let i of arr) {
-            console.log(i) // ?
-          }
-          ```
-
-        0. *iterable.js*
-
-          ```js
-          var iterable = {
-            [Symbol.iterator]() {
-              return {
-                i: 0,
-                next () {
-                  return {
-                    done: this.i === 10,
-                    value: this.i++
-                  }
+        ```js
+        var iterable = {
+          [Symbol.iterator]() {
+            return {
+              i: 0,
+              next () {
+                return {
+                  done: this.i === 10,
+                  value: this.i++
                 }
               }
             }
           }
+        }
 
-          for (const i of iterable) {
-            console.log(i) // ?
-          }
+        for (const i of iterable) {
+          console.log(i) // ?
+        }
 
-          // [...iterable] ?
-          ```
+        // [...iterable] ?
+        ```
 
-        0. *iterator.js*
+      0. *iterator.js*
 
-          ```js
-          var iterable = {
-            [Symbol.iterator]() {
-              return {
-                i: 0,
-                next () {
-                  const done = this.i === 10
-                  const value = done ? undefined : this.i++
-                  return { done, value }
-                }
+        ```js
+        var iterable = {
+          [Symbol.iterator]() {
+            return {
+              i: 0,
+              next () {
+                const done = this.i === 10
+                const value = done ? undefined : this.i++
+                return { done, value }
               }
             }
           }
+        }
 
-          const iterator = iterable[Symbol.iterator]()
+        const iterator = iterable[Symbol.iterator]()
 
-          iterator.next() // ?
-          iterator.next() // ?
-          iterator.next() // ?
-          // ...
+        iterator.next() // ?
+        iterator.next() // ?
+        iterator.next() // ?
+        // ...
 
 
-          const iterator2 = iterable[Symbol.iterator]()
+        const iterator2 = iterable[Symbol.iterator]()
 
-          iterator2.next() // ?
-          iterator2.next() // ?
-          iterator2.next() // ?
-          // ...
-          ```
+        iterator2.next() // ?
+        iterator2.next() // ?
+        iterator2.next() // ?
+        // ...
+        ```
+
 
   * Generators
 
