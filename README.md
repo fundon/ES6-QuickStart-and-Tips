@@ -5,7 +5,7 @@ ES6: 快速体验，及实用小贴士
 
 > 2016 年是 ES6 大力推广和普及的黄金时期，也是今年的流行趋势，
 > 就一个 [ES6](https://github.com/search?o=desc&q=ES6&s=stars&type=Repositories&utf8=✓) 关键词，
-> 在 GitHub 上就有这么多搜索结果。（赶紧要跟上大部队！）
+> 在 GitHub 上就有这么多搜索结果。（赶紧跟上大部队！）
 
 ![It's very hot!](images/github-search-results.png)
 
@@ -33,9 +33,11 @@ ES6 是 **ECMAScript 6** 的简称，是 [ECMA-262 的第 6 版本](http://www.e
 
 * ES6 在浏览器，Node.js 支持如何，适不适合开发，生产？
 
-  - 具体可以看 [ECMAScript 兼容列表](http://kangax.github.io/compat-table/es2016plus/)。
+  - 浏览器： [ECMAScript 兼容列表](http://kangax.github.io/compat-table/es6/)
 
-  - 使用一些转换工具，可以把 ES6 => ES5。
+  - Node.js：[ES2015 Support](http://node.green)
+
+  - 工具：使用一些转换工具，可以把 ES6 => ES5
 
 
 * 为什么要学习新语法？
@@ -231,7 +233,9 @@ ES6 是 **ECMAScript 6** 的简称，是 [ECMA-262 的第 6 版本](http://www.e
       改进对象声明：
 
         - 属性缩写
+
         - 函数缩写
+
         - 属性名计算
 
       > 大大减少了代码量，创建对象更加简洁。
@@ -310,7 +314,9 @@ ES6 是 **ECMAScript 6** 的简称，是 [ECMA-262 的第 6 版本](http://www.e
       模板字符串：
 
         - 支持多行
+
         - 支持变量绑定
+
         - 也支持对字符串不转义，不解析
 
       > 终于可以舒服的写多行字符串了，这功能等到花儿都谢了！
@@ -380,7 +386,7 @@ ES6 是 **ECMAScript 6** 的简称，是 [ECMA-262 的第 6 版本](http://www.e
 
       解析赋值
 
-      - Array ArrayLike Object 等，具有迭代器接口的对象
+        - Array ArrayLike Object 等，具有迭代器接口的对象
 
       > 可以轻松获取对象、数组等的元素，并赋值到指定变量
 
@@ -458,7 +464,9 @@ ES6 是 **ECMAScript 6** 的简称，是 [ECMA-262 的第 6 版本](http://www.e
       默认值、余下参数（Rest），数组展开（Spread）
 
         - 默认值： 减少了对输入参数的检查的代码量，即可读又简洁
+
         - Rest：对参数数组操作更加灵活
+
         - Spread：可以看作是 Rest 的反操作，更加方便对数组的操作 
 
       * e.g.
@@ -511,6 +519,14 @@ ES6 是 **ECMAScript 6** 的简称，是 [ECMA-262 的第 6 版本](http://www.e
         ```
 
       * 猜猜猜
+
+        0. *string.js*
+
+          ```js
+          var str = '1234567890'
+
+          // [...str] ?
+          ```
 
         0. *concat.js*
 
@@ -565,74 +581,177 @@ ES6 是 **ECMAScript 6** 的简称，是 [ECMA-262 的第 6 版本](http://www.e
 
   * Let + Const
 
-    变量、常量定义声明：
+      变量、常量定义声明：
 
-      - 块级作用域
-      - const: 一次性声明
+        - 块级作用域
 
-    > 当满世界都是 `var` 的时候，变量管理是个神坑！
+        - const: 一次性声明
 
-    * e.g.
+      > 当满世界都是 `var` 的时候，变量管理是个神坑！
 
-      ```js
-      // old
-      // 函数作用域下覆盖全局作用域
-      var bar = 1
-      var bar = 3
-      function method () {
-        console.log(bar) // undefined
-        var bar = 2
-      }
-
-      // 变量泄漏
-      var s = 'hello';
-      for (var i = 0; i < s.length; i++) {
-        console.log(s[i]);
-      }
-      console.log(i); // 5
-      ```
-
-      ```js
-      // new
-      let bar0 = 1
-      let bar1 = 3
-
-      function method () {
-        console.log(bar0)
-        let bar3 = 2
-      }
-
-      var s = 'hello';
-      for (let i = 0; i < s.length; i++) {
-        console.log(s[i]);
-      }
-      ```
-
-    * 猜猜猜
-
-      0. *global.js*
+      * e.g.
 
         ```js
-        var a = 1
-        let b = 2
-        const c = 3
+        // old
+        // 函数作用域下覆盖全局作用域
+        var bar = 1
+        var bar = 3
+        function method () {
+          console.log(bar) // undefined
+          var bar = 2
+        }
 
-        // this.a ?
-        // this.b ?
-        // this.c ?
+        // 变量泄漏
+        var s = 'hello';
+        for (var i = 0; i < s.length; i++) {
+          console.log(s[i]);
+        }
+        console.log(i); // 5
         ```
 
-      0. *for.js*
-
         ```js
+        // new
+        let bar0 = 1
+        let bar1 = 3
+
+        function method () {
+          console.log(bar0)
+          let bar3 = 2
+        }
+
         var s = 'hello';
         for (let i = 0; i < s.length; i++) {
           console.log(s[i]);
         }
-        console.log(i); // ?
         ```
 
+      * 猜猜猜
+
+        0. *global.js*
+
+          ```js
+          var a = 1
+          let b = 2
+          const c = 3
+
+          // this.a ?
+          // this.b ?
+          // this.c ?
+          ```
+
+        0. *for.js*
+
+          ```js
+          var s = 'hello';
+          for (let i = 0; i < s.length; i++) {
+            console.log(s[i]);
+          }
+          console.log(i); // ?
+          ```
+
   * Iterators + For..Of
+
+      迭代器和 `for..of`
+
+        - 可迭代协议：ES6 定义了一套统一的标准，允许对 JavaScript 对象自定义它们的迭代行为。
+
+        - 内置可迭代类型有 String，Array，TypedArray，Map，Set，因为在它们的原型对象上已经有了 `@@iterator`（`[Symbol.iterator]`） 方法。
+
+      > 像 [...arr] 就是迭器一个很好的例子。
+
+      * .e.g.
+
+        ```js
+        // old
+        var arr = [1, 2, 3]
+
+        for (let i in arr) {
+          console.log(i)
+        }
+        ```
+
+        ```js
+        // new
+        var arr = [1, 2, 3]
+
+        for (let i of arr) {
+          console.log(i)
+        }
+        ```
+
+      * 猜猜猜
+
+        0. *for-loops.js*
+
+          ```js
+          Array.prototype.arrCustom = function () {}
+          var arr = [1, 2, 3]
+          arr.isArray = true
+
+          for (let i in arr) {
+            console.log(i) // ?
+          }
+
+          for (let i of arr) {
+            console.log(i) // ?
+          }
+          ```
+
+        0. *iterable.js*
+
+          ```js
+          var iterable = {
+            [Symbol.iterator]() {
+              return {
+                i: 0,
+                next () {
+                  return {
+                    done: this.i === 10,
+                    value: this.i++
+                  }
+                }
+              }
+            }
+          }
+
+          for (const i of iterable) {
+            console.log(i) // ?
+          }
+
+          // [...iterable] ?
+          ```
+
+        0. *iterator.js*
+
+          ```js
+          var iterable = {
+            [Symbol.iterator]() {
+              return {
+                i: 0,
+                next () {
+                  const done = this.i === 10
+                  const value = done ? undefined : this.i++
+                  return { done, value }
+                }
+              }
+            }
+          }
+
+          const iterator = iterable[Symbol.iterator]()
+
+          iterator.next() // ?
+          iterator.next() // ?
+          iterator.next() // ?
+          // ...
+
+
+          const iterator2 = iterable[Symbol.iterator]()
+
+          iterator2.next() // ?
+          iterator2.next() // ?
+          iterator2.next() // ?
+          // ...
+          ```
 
   * Generators
 
