@@ -1147,7 +1147,7 @@ ES6 是 **ECMAScript 6** 的简称，是 [ECMA-262 的第 6 版本](http://www.e
         ```
 
 
-  * Symbols
+  * [Symbols](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol)
 
     符号：
 
@@ -1155,10 +1155,42 @@ ES6 是 **ECMAScript 6** 的简称，是 [ECMA-262 的第 6 版本](http://www.e
 
       - 不可变
 
+      - 不列入对象的 `Object.getOwnPropertyNames(obj)` 和 `Object.keys(obj)`
+
+    > 想给对象打一个暗号，再也不难了！
+
+    * e.g.
+
+      ```js
+      // old
+      let obj = {
+        id: 1
+      }
+
+      obj.id      // 1
+      obj.id = 2
+      obj.id      // 2
+      ```
+
+      ```js
+      // new
+      let obj = {
+        [Symbol('id')]: 1
+      }
+
+      obj[Symbol('id')]      // undefined
+      obj[Symbol('id')] = 2
+      obj[Symbol('id')]      // undefined
+
+      for (const k of Object.getOwnPropertySymbols(obj)) {
+        console.log(obj[k])
+      }
+      ```
+
 
   * Math + Number + String + Array + Object APIs
 
-    新增 APIs，更加方便地数据操作。
+    新增 APIs，数据操作更加方便。
 
     * e.g.
 
