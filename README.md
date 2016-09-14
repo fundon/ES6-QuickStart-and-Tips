@@ -963,26 +963,17 @@ ES6 是 **ECMAScript 6** 的简称，是 [ECMA-262 的第 6 版本](http://www.e
 
           next (i = 0, context, nextFunc) {
             const fn = this[i] || nextFunc
-            let called = false
 
             return {
               done: i === this.length,
               value: fn && fn(context, () => {
-                if (called) {
-                  throw new Error('next() called multiple times')
-                }
-                called = true
-                return Promise.resolve(this.next(i + 1, context, nextFunc).value)
+                return this.next(i + 1, context, nextFunc).value
               })
             }
           }
 
           compose (context, nextFunc) {
-            try {
-              return Promise.resolve(this[SYMBOL_ITERATOR]().next(0, context, nextFunc).value)
-            } catch (err) {
-              return Promise.reject(err)
-            }
+            return this[SYMBOL_ITERATOR]().next(0, context, nextFunc).value
           }
 
         }
@@ -991,29 +982,25 @@ ES6 是 **ECMAScript 6** 的简称，是 [ECMA-262 的第 6 版本](http://www.e
 
         middleware.push((ctx, next) => {
           ctx.arr.push(1)
-          return next().then(() => {
-            ctx.arr.push(6)
-          })
+          next()
+          ctx.arr.push(6)
         })
 
         middleware.push((ctx, next) => {
           ctx.arr.push(2)
-          return next().then(() => {
-            ctx.arr.push(5)
-          })
+          next()
+          ctx.arr.push(5)
         })
 
         middleware.push((ctx, next) => {
           ctx.arr.push(3)
-          return next().then(() => {
-            ctx.arr.push(4)
-          })
+          next()
+          ctx.arr.push(4)
         })
 
         const ctx = { arr: [] }
-        middleware.compose(ctx).then(() => {
-          console.log(ctx.arr) // ?
-        })
+        middleware.compose(ctx)
+        console.log(ctx.arr) // ?
         ```
 
 
@@ -1056,13 +1043,122 @@ ES6 是 **ECMAScript 6** 的简称，是 [ECMA-262 的第 6 版本](http://www.e
 
     * e.g.
 
+      ```js
+      // old
+      const inner = {
+        name: 'ES6'
+      }
+
+      var outer = {
+        inner,
+        get name () {
+          return this.inner.name
+        },
+        set name (name) {
+          this.inner.name = name
+        }
+      }
+
+      // outer.name
+      ```
+
+      ```js
+      // new
+      const inner = {
+        name: 'ES6'
+      }
+
+      var p = new Proxy(inner, {
+        get (target, name) {
+          return target[name]
+        },
+
+        set (target, name, value) {
+          if ('string' !== typeof value) throw new TypeError('value must be String!')
+          target[name] = value
+        }
+      })
+
+      p.name
+      p.name = 2
+      p.name = 'ES2015'
+      ```
+
     * 猜猜猜
+
+      0. *[delegate-proxy.js](https://github.com/fundon/delegate-proxy)*
+
+        ```js
+        function delegateProxy (target, origin) {
+          return new Proxy(target, {
+            get (target, key, receiver) {
+              if (key in target) return Reflect.get(target, key, receiver)
+              const value = origin[key]
+              return 'function' === typeof value ? function method () {
+                return value.apply(origin, arguments)
+              } : value
+            },
+            set (target, key, value, receiver) {
+              if (key in target) return Reflect.set(target, key, value, receiver)
+              origin[key] = value
+              return true
+            }
+          })
+        }
+
+        const bar = {
+          n: 1,
+
+          add (i) {
+            this.n += i
+          }
+        }
+
+        const foo = {
+
+          set (n) {
+            this.n = n | 0
+          },
+
+          sub (i) {
+            this.n -= i
+          }
+
+        }
+
+        const p = delegateProxy(foo, bar)
+
+        bar
+        foo
+        p
+
+        p.n       // ?
+        p.add(1)
+        p.n       // ?
+
+        p.sub(2)
+        p.n       // ?
+
+        p.set(1)
+        p.n       // ?
+
+        p.n = 233
+        p.n       // ?
+        ```
 
 
   * Symbols
 
+    符号：
+
+      - 唯一性
+
+      - 不可变
+
 
   * Math + Number + String + Array + Object APIs
+
+    新增 APIs，更加方便地数据操作。
 
 
   * Binary and Octal Literals
