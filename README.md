@@ -655,7 +655,7 @@ ES6 是 **ECMAScript 6** 的简称，是 [ECMA-262 的第 6 版本](http://www.e
 
     迭代器和 `for..of`
 
-    > 像 [...arr] 就是迭代器一个很好的例子。
+    > 像 `[...arr]` 就是迭代器一个很好的例子。
 
     - 可迭代协议：ES6 定义了一套统一的标准，允许对 JavaScript 对象自定义它们的迭代行为。
 
@@ -915,7 +915,7 @@ ES6 是 **ECMAScript 6** 的简称，是 [ECMA-262 的第 6 版本](http://www.e
 
     子类可继承自内置数据类型
 
-    > 真的太方便了，比如想对 Array 进行扩展，现在无需修改 Array.prototype，extends Array 就可以了。
+    > 真的太方便了，比如想对 Array 进行扩展，现在无需修改 `Array.prototype`，`extends Array` 就可以了。
 
     - Array Boolean String Number Map Set Error RegExp Function Promise
 
