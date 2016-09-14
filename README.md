@@ -951,19 +951,32 @@ ES6 是 **ECMAScript 6** 的简称，是 [ECMA-262 的第 6 版本](http://www.e
     * 猜猜猜
 
 
+
   * Map + Set + WeakMap + WeakSet
+
+    新增 `Map` `Set` `WeakMap` `WeakSet` 几种高效的数据类型
+
 
   * Proxies
 
+    > 当我们不想把对象暴露出来，不想直接操作它们，想增加一层校验时，`Proxies` 是一个最佳方案。  
+    > 但当增加了 `Proxies` 这一层，对性能还是会有影响的。
+
+
   * Symbols
+
 
   * Math + Number + String + Array + Object APIs
 
+
   * Binary and Octal Literals
+
 
   * Promises
 
+
   * Reflect API
+
 
   * Tail Calls
 
