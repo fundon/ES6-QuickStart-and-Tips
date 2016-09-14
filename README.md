@@ -1160,9 +1160,43 @@ ES6 是 **ECMAScript 6** 的简称，是 [ECMA-262 的第 6 版本](http://www.e
 
     新增 APIs，更加方便地数据操作。
 
+    * e.g.
+
+      ```js
+      Number.EPSILON
+      Number.isInteger(Infinity) // false
+      Number.isNaN("NaN") // false
+
+      Math.acosh(3) // 1.762747174039086
+      Math.hypot(3, 4) // 5
+      Math.imul(Math.pow(2, 32) - 1, Math.pow(2, 32) - 2) // 2
+
+      "abcde".includes("cd") // true
+      "abc".repeat(3) // "abcabcabc"
+
+      Array.from(document.querySelectorAll("*")) // Returns a real Array
+      Array.of(1, 2, 3) // Similar to new Array(...), but without special one-arg behavior
+      [0, 0, 0].fill(7, 1) // [0,7,7]
+      [1,2,3].findIndex(x => x == 2) // 1
+      ["a", "b", "c"].entries() // iterator [0, "a"], [1,"b"], [2,"c"]
+      ["a", "b", "c"].keys() // iterator 0, 1, 2
+      ["a", "b", "c"].values() // iterator "a", "b", "c"
+
+      Object.assign(Point, { origin: new Point(0,0) })
+      ```
+
 
   * Binary and Octal Literals
 
+    二进制 `b`，八进制 `o` 字面量
+
+    * e.g.
+
+      ```js
+      0b111110111 === 503 // true
+      0o767 === 503 // true
+      0x1f7 === 503 // true
+      ```
 
   * Promises
 
@@ -1288,10 +1322,30 @@ ES6 是 **ECMAScript 6** 的简称，是 [ECMA-262 的第 6 版本](http://www.e
 
 
 
-  * Reflect API
+  * [Reflect API](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Reflect)
+
+    反射 API：公开了对象的元操作，效果跟 Proxy API 相反
+
+    * e.g.
+
+      ```js
+      var O = {a: 1};
+      Object.defineProperty(O, 'b', {value: 2});
+      O[Symbol('c')] = 3;
+
+      Reflect.ownKeys(O); // ['a', 'b', Symbol(c)]
+
+      function C(a, b){
+        this.c = a + b;
+      }
+      var instance = Reflect.construct(C, [20, 22]);
+      instance.c; // 42
+      ```
 
 
   * Tail Calls
+
+    优化了尾递归算法，保证栈不会无限增长，使得尾递归算法安全。
 
 
 ## 快速体验
