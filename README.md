@@ -950,17 +950,113 @@ ES6 是 **ECMAScript 6** 的简称，是 [ECMA-262 的第 6 版本](http://www.e
 
     * 猜猜猜
 
+      0. *[middleware.js](https://github.com/trekjs/middleware)*
+
+        ```js
+        const SYMBOL_ITERATOR = Symbol.iterator
+
+        class Middleware extends Array {
+
+          [SYMBOL_ITERATOR] () {
+            return this
+          }
+
+          next (i = 0, context, nextFunc) {
+            const fn = this[i] || nextFunc
+            let called = false
+
+            return {
+              done: i === this.length,
+              value: fn && fn(context, () => {
+                if (called) {
+                  throw new Error('next() called multiple times')
+                }
+                called = true
+                return Promise.resolve(this.next(i + 1, context, nextFunc).value)
+              })
+            }
+          }
+
+          compose (context, nextFunc) {
+            try {
+              return Promise.resolve(this[SYMBOL_ITERATOR]().next(0, context, nextFunc).value)
+            } catch (err) {
+              return Promise.reject(err)
+            }
+          }
+
+        }
+
+        const middleware = new Middleware()
+
+        middleware.push((ctx, next) => {
+          ctx.arr.push(1)
+          return next().then(() => {
+            ctx.arr.push(6)
+          })
+        })
+
+        middleware.push((ctx, next) => {
+          ctx.arr.push(2)
+          return next().then(() => {
+            ctx.arr.push(5)
+          })
+        })
+
+        middleware.push((ctx, next) => {
+          ctx.arr.push(3)
+          return next().then(() => {
+            ctx.arr.push(4)
+          })
+        })
+
+        const ctx = { arr: [] }
+        middleware.compose(ctx).then(() => {
+          console.log(ctx.arr) // ?
+        })
+        ```
+
 
 
   * Map + Set + WeakMap + WeakSet
 
     新增 `Map` `Set` `WeakMap` `WeakSet` 几种高效的数据类型
 
+    * e.g.
+
+      ```js
+      // Sets
+      var s = new Set();
+      s.add("hello").add("goodbye").add("hello");
+      s.size === 2;
+      s.has("hello") === true;
+
+      // Maps
+      var m = new Map();
+      m.set("hello", 42);
+      m.set(s, 34);
+      m.get(s) == 34;
+
+      // Weak Maps
+      var wm = new WeakMap();
+      wm.set(s, { extra: 42 });
+      wm.size === undefined
+
+      // Weak Sets
+      var ws = new WeakSet();
+      ws.add({ data: 42 });
+      // Because the added object has no other references, it will not be held in the set
+      ```
+
 
   * Proxies
 
     > 当我们不想把对象暴露出来，不想直接操作它们，想增加一层校验时，`Proxies` 是一个最佳方案。  
     > 但当增加了 `Proxies` 这一层，对性能还是会有影响的。
+
+    * e.g.
+
+    * 猜猜猜
 
 
   * Symbols
