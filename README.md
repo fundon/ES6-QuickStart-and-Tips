@@ -659,7 +659,7 @@ ES6 是 **ECMAScript 6** 的简称，是 [ECMA-262 的第 6 版本](http://www.e
 
     - 可迭代协议：ES6 定义了一套统一的标准，允许对 JavaScript 对象自定义它们的迭代行为。
 
-    - 内置可迭代类型有 String，Array，TypedArray，Map，Set，因为在它们的原型对象上已经有了 `@@iterator`（`[Symbol.iterator]`） 方法。
+    - 内置可迭代类型有 String，Array，TypedArray，Map，Set，因为在它们的原型对象上已经有了 `[Symbol.iterator]` 方法。
 
     * e.g.
 
@@ -759,7 +759,7 @@ ES6 是 **ECMAScript 6** 的简称，是 [ECMA-262 的第 6 版本](http://www.e
 
     生成器：
 
-    > 生成器大杀气！
+    > 生成器大杀器！
 
     - [可迭代](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols#iterable)
 
@@ -881,9 +881,75 @@ ES6 是 **ECMAScript 6** 的简称，是 [ECMA-262 的第 6 版本](http://www.e
 
   * Unicode
 
-  * Modules
+    Unicode
+
+    - 加强对 Unicode 的支持，并且扩展了字符串对象
+
+    * e.g.
+
+      ```js
+      // same as ES5.1
+      "𠮷".length == 2
+
+      // new RegExp behaviour, opt-in ‘u’
+      "𠮷".match(/./u)[0].length == 2
+
+      // new form
+      "\u{20BB7}" == "𠮷" == "\uD842\uDFB7"
+
+      // new String ops
+      "𠮷".codePointAt(0) == 0x20BB7
+
+      // for-of iterates code points
+      for(var c of "𠮷") {
+        console.log(c);
+      }
+      ```
+
+
+  * Modules ?
+
+    模块话系统目前还未实现！
 
   * Subclassable Built-ins
+
+    子类可继承自内置数据类型
+
+    > 真的太方便了，比如想对 Array 进行扩展，现在无需修改 Array.prototype，extends Array 就可以了。
+
+    - Array Boolean String Number Map Set Error RegExp Function Promise
+
+    * e.g.
+
+      ```js
+      // old
+      // This is danger.
+      Array.prototype.sum = function () {
+        return this.reduce((t, curr) => t + curr, 0)
+      }
+
+      var a = [1, 2, 3]
+      a.sum()
+      ```
+
+      ```js
+      // new
+      class CustomArray extends Array {
+        constructor (...args) {
+          super(...args)
+        }
+
+        sum () {
+          return this.reduce((t, curr) => t + curr, 0)
+        }
+      }
+
+      var a = CustomArray.from([1, 2, 3])
+      a.sum()
+      ```
+
+    * 猜猜猜
+
 
   * Map + Set + WeakMap + WeakSet
 
