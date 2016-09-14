@@ -23,9 +23,9 @@ ES6 是 **ECMAScript 6** 的简称，是 [ECMA-262 的第 6 版本](http://www.e
 
   [ES7 和 ES8] 统称为 ECMAScript Next。  
 
-    * [ES7] 在 2016-06 发布，又称 ES2016。
+  [ES7] 在 2016-06 发布，又称 ES2016。  
 
-    * ES8 在 2017-06 发布，又称 ES2017。
+  ES8 在 2017-06 发布，又称 ES2017。
 
 * ECMAScript 与 JavaScript 有什么关系？
 
