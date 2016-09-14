@@ -51,7 +51,7 @@ ES6 是 **ECMAScript 6** 的简称，是 [ECMA-262 的第 6 版本](http://www.e
 
     「箭头」函数（`=>`）和 `this`：
 
-    > 使用“箭头”函数我们可以体验函数式编程的”美”，高效、简洁，当然也要注意上下文 `this`。
+    > 使用「箭头」函数我们可以体验函数式编程的”美”，高效、简洁，当然也要注意上下文 `this`。
 
     * e.g.
 
@@ -232,13 +232,13 @@ ES6 是 **ECMAScript 6** 的简称，是 [ECMA-262 的第 6 版本](http://www.e
 
     改进对象声明：
 
+    > 大大减少了代码量，创建对象更加简洁。
+
     - 属性缩写
 
     - 函数缩写
 
     - 属性名计算
-
-    > 大大减少了代码量，创建对象更加简洁。
 
     * e.g.
 
@@ -313,13 +313,13 @@ ES6 是 **ECMAScript 6** 的简称，是 [ECMA-262 的第 6 版本](http://www.e
 
     模板字符串：
 
+    > 终于可以舒服的写多行字符串了，这功能等到花儿都谢了！
+
     - 支持多行
 
     - 支持变量绑定
 
     - 也支持对字符串不转义，不解析
-
-    > 终于可以舒服的写多行字符串了，这功能等到花儿都谢了！
 
     * e.g.
 
@@ -386,9 +386,9 @@ ES6 是 **ECMAScript 6** 的简称，是 [ECMA-262 的第 6 版本](http://www.e
 
     解析赋值
 
-    - Array ArrayLike Object 等，具有迭代器接口的对象
-
     > 可以轻松获取对象、数组等的元素，并赋值到指定变量
+
+    - Array ArrayLike Object 等，具有迭代器接口的对象
 
     * e.g.
 
@@ -584,11 +584,11 @@ ES6 是 **ECMAScript 6** 的简称，是 [ECMA-262 的第 6 版本](http://www.e
 
     变量、常量定义声明：
 
+    > 当满世界都是 `var` 的时候，变量管理是个神坑！
+
     - 块级作用域
 
     - const: 一次性声明
-
-    > 当满世界都是 `var` 的时候，变量管理是个神坑！
 
     * e.g.
 
@@ -655,13 +655,13 @@ ES6 是 **ECMAScript 6** 的简称，是 [ECMA-262 的第 6 版本](http://www.e
 
     迭代器和 `for..of`
 
+    > 像 [...arr] 就是迭器一个很好的例子。
+
     - 可迭代协议：ES6 定义了一套统一的标准，允许对 JavaScript 对象自定义它们的迭代行为。
 
     - 内置可迭代类型有 String，Array，TypedArray，Map，Set，因为在它们的原型对象上已经有了 `@@iterator`（`[Symbol.iterator]`） 方法。
 
-    > 像 [...arr] 就是迭器一个很好的例子。
-
-    * .e.g.
+    * e.g.
 
       ```js
       // old
@@ -746,7 +746,6 @@ ES6 是 **ECMAScript 6** 的简称，是 [ECMA-262 的第 6 版本](http://www.e
         iterator.next() // ?
         // ...
 
-
         const iterator2 = iterable[Symbol.iterator]()
 
         iterator2.next() // ?
@@ -757,6 +756,128 @@ ES6 是 **ECMAScript 6** 的简称，是 [ECMA-262 的第 6 版本](http://www.e
 
 
   * Generators
+
+    生成器：
+
+    > 生成器大杀气！
+
+    - [可迭代](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols#iterable)
+
+    - [遵循迭代器协议](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols#iterator)
+
+    - 可在单个函数内自定义迭代逻辑，可以替代迭代器，功能更强大
+
+    - 可中断
+
+    * e.g.
+
+      ```js
+      // old
+      var iterable = {
+        [Symbol.iterator]() {
+          return {
+            i: 0,
+            next () {
+              const done = this.i === 10
+              const value = done ? undefined : this.i++
+              return { done, value }
+            }
+          }
+        }
+      }
+      const iterator = iterable[Symbol.iterator]()
+      ```
+
+      ```js
+      // new
+      function* generatable () {
+        for (let i = 0, l = 10; i < l; ++i) {
+          yield i
+        }
+      }
+      const iterator = generatable()
+      ```
+
+    * 猜猜猜
+
+      0. *generatable.js*
+
+        ```js
+        function* generatable () {
+          for (let i = 0, l = 10; i < l; ++i) {
+            yield i
+          }
+        }
+        const iterator = generatable()
+
+        for (const i of generatable()) {
+          console.log(i) // ?
+        }
+        // [...generatable()] ?
+        ```
+
+      0. *next.js*
+
+        ```js
+        function* range(min = 0, max = 10, step = 1) {
+          for (; min < max; min += step) {
+            let rest = yield min
+            if (rest) min = step * -1
+          }
+        }
+
+        const iterator = range()
+
+        iterator.next() // ?
+        iterator.next() // ?
+        iterator.next() // ?
+        iterator.next(true) // ?
+        iterator.next() // ?
+        iterator.next() // ?
+        iterator.next() // ?
+
+        const iterator2 = range(0, 100, 2)
+
+        [...iterator2] // ?
+        iterator.next() // ?
+        ```
+
+      0. *return.js*
+
+        ```js
+        function* range(min = 0, max = 10, step = 1) {
+          for (; min < max; min += step) {
+            let rest = yield min
+            if (rest) min = step * -1
+          }
+        }
+
+        const iterator = range()
+        iterator.next()
+        iterator.next(true)
+        iterator.next()
+        iterator.return() // ?
+        iterator.next() // ?
+        iterator.return(1) // ?
+        iterator.next() // ?
+        ```
+
+      0. *yield.js*
+
+        ```js
+        function* g() {
+          yield 1
+          yield 2
+          yield 3
+          yield* [4, 5, 6]
+          yield* 'Hello World!'
+          yield 7
+        }
+
+        [...g()] // ?
+        ```
+
+
 
   * Unicode
 
