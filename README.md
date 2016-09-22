@@ -1388,6 +1388,21 @@ ES6 是 **ECMAScript 6** 的简称，是 [ECMA-262 的第 6 版本](http://www.e
 
 > 深入学习特性，应用生产
 
+* http://ramdajs.com/
+
+* https://github.com/cujojs/most
+
+* https://lodash.com/
+
+* `fs.readdir` 问题
+
+  - https://github.com/nodejs/node/issues/583
+
+  - https://github.com/w3c/filesystem-api
+
+* https://github.com/kriskowal/gtor/#asynchronous-generator-functions
+
+
 ## 兼容，代码转换
 
 > 使用转换工具，对 ES6+ 的代码进行转换，适配浏览器或者 Node < v6
