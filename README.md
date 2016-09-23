@@ -1,5 +1,3 @@
-![It's very hot!](images/stuq-gogogo.png)
-
 ES6: QuickStart and Tips
 ------------------------
 
@@ -1455,5 +1453,3 @@ ES6 是 **ECMAScript 6** 的简称，是 [ECMA-262 的第 6 版本](http://www.e
 [ES7 和 ES8]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/New_in_JavaScript/ECMAScript_Next_support_in_Mozilla
 
 [ES7]: http://www.ecma-international.org/ecma-262/7.0/index.html
-
-![It's very hot!](images/stuq-qa.png)
