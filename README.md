@@ -37,6 +37,8 @@ ES6 是 **ECMAScript 6** 的简称，是 [ECMA-262 的第 6 版本](http://www.e
 
   - Node.js：[ES2015 Support](http://node.green)
 
+  - 性能：[Performance of ES6 features relative to the ES5 baseline operations per second](https://kpdecker.github.io/six-speed/)
+
   - 工具：使用一些转换工具，可以把 ES6 => ES5
 
 
